@@ -16,3 +16,9 @@ if (sys.props("java.version").startsWith("1.6"))
 else
   addSbtPlugin("org.ensime" % "sbt-ensime" % "1.9.1")
 ```
+
+Also you should read:
+
+http://www.scalatest.org/install
+
+and install global resolver
