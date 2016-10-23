@@ -21,4 +21,8 @@ Also you should read:
 
 http://www.scalatest.org/install
 
-and install global resolver
+add global resolver in `~/.sbt/0.13/global.sbt`
+
+```scala
+resolvers += "Artima Maven Repository" at "http://repo.artima.com/releases"
+```
