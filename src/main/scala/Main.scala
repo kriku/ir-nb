@@ -20,22 +20,44 @@ object Main {
     resource.getPath
   }
 
+  // Files in one line and don't know how/why do it lazy
   def getDocsFromPath(path: String): Array[Document] = {
     val pathFile = new File(getResourcePath(path))
     val files = recursiveListFiles(pathFile)
-    files.filter(_.isFile)
-      .map(file => {
-             new Document(file.getName,
-                          io.Source.fromFile(file).mkString)
-           })
+    files.filter(_.isFile).map {
+      (file) => {
+        new Document(file.getName, io.Source.fromFile(file).mkString)
+      }
+    }
+  }
+
+  // I don't fully understand how I got it
+  // foldLeft => foldLeft - is this ok?
+  def conductDictionary(docs: Array[Document]): Map[String, Int] = {
+    docs.foldLeft(Map.empty[String, Int]) {
+      (map, doc) => doc.dictionary.foldLeft(map) {
+        (map, pair) => map + (pair._1 -> (map.getOrElse(pair._1, 0) + pair._2))
+      }
+    }
   }
 
   def main(args: Array[String]):Unit = {
-    val nonspamTrainDocs = getDocsFromPath("/mails/spam-train")
-    val nonspamTestDocs = getDocsFromPath("/mails/nonspam-test")
-    val spamTrainDocs = getDocsFromPath("/mails/nonspam-train")
-    val spamTestDocs = getDocsFromPath("/mails/spam-test")
+    // also grub Readme (wich shouldn't)... but not deside yet how conduct whole
+    // val mails = getDocsFromPath("/mails")
+    // val dictionary = conductDictionary(mails)
+    // println(dictionary.toSeq.sortWith(_._2 > _._2).take(10))
 
-    nonspamTestDocs.map(println)
+    // to keep track dictionaries separately
+    val nsTrainDocs = getDocsFromPath("/mails/spam-train")
+    val nsTestDocs = getDocsFromPath("/mails/nonspam-test")
+    val sTrainDocs = getDocsFromPath("/mails/nonspam-train")
+    val sTestDocs = getDocsFromPath("/mails/spam-test")
+
+    val nsTrainDictionary = conductDictionary(nsTrainDocs)
+    val nsTestDictionary = conductDictionary(nsTrainDocs)
+    val sTrainDictionary = conductDictionary(nsTrainDocs)
+    val sTestDictionary = conductDictionary(nsTrainDocs)
+
+    println(nsTrainDictionary.toSeq.sortWith(_._2 > _._2).take(10))
   }
 }
