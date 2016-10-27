@@ -34,12 +34,9 @@ object Main {
   // I don't fully understand how I got it
   // foldLeft => foldLeft - is this ok?
   def conductDictionary(docs: Array[Document]): Map[String, Int] = {
-    docs.flatMap(_.words).groupBy(identity).mapValues(_.size)
-    // docs.foldLeft(Map.empty[String, Int]) {
-    //   (map, doc) => doc.dictionary.foldLeft(map) {
-    //     case (map, (w, v)) => map + (w -> (map.getOrElse(w, 0) + v))
-    //   }
-    // }
+    val allWords = docs.flatMap(_.words)
+    println(allWords.length)
+    allWords.groupBy(identity).mapValues(_.size)
   }
 
   def main(args: Array[String]):Unit = {
@@ -55,9 +52,9 @@ object Main {
     val sTestDocs = getDocsFromPath("/mails/spam-test")
 
     val nsTrainDictionary = conductDictionary(nsTrainDocs)
-    val nsTestDictionary = conductDictionary(nsTrainDocs)
-    val sTrainDictionary = conductDictionary(nsTrainDocs)
-    val sTestDictionary = conductDictionary(nsTrainDocs)
+    val nsTestDictionary = conductDictionary(nsTestDocs)
+    val sTrainDictionary = conductDictionary(sTrainDocs)
+    val sTestDictionary = conductDictionary(sTestDocs)
 
     val dictionary = conductDictionary(nsTrainDocs ++ nsTestDocs ++ sTrainDocs ++ sTestDocs)
 
