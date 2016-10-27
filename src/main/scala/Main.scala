@@ -34,16 +34,16 @@ object Main {
   // I don't fully understand how I got it
   // foldLeft => foldLeft - is this ok?
   def conductDictionary(docs: Array[Document]): Map[String, Int] = {
-    // docs.flatMap(_.words).groupBy(identity).mapValues(_.size)
-    docs.foldLeft(Map.empty[String, Int]) {
-      (map, doc) => doc.dictionary.foldLeft(map) {
-        case (map, (w, v)) => map + (w -> (map.getOrElse(w, 0) + v))
-      }
-    }
+    docs.flatMap(_.words).groupBy(identity).mapValues(_.size)
+    // docs.foldLeft(Map.empty[String, Int]) {
+    //   (map, doc) => doc.dictionary.foldLeft(map) {
+    //     case (map, (w, v)) => map + (w -> (map.getOrElse(w, 0) + v))
+    //   }
+    // }
   }
 
   def main(args: Array[String]):Unit = {
-    // also grub Readme (wich shouldn't)... but not deside yet how conduct whole
+    // also grab Readme (wich shouldn't)... but not deside yet how conduct whole
     // val mails = getDocsFromPath("/mails")
     // val dictionary = conductDictionary(mails)
     // println(dictionary.toSeq.sortWith(_._2 > _._2).take(10))
@@ -59,6 +59,9 @@ object Main {
     val sTrainDictionary = conductDictionary(nsTrainDocs)
     val sTestDictionary = conductDictionary(nsTrainDocs)
 
+    val dictionary = conductDictionary(nsTrainDocs ++ nsTestDocs ++ sTrainDocs ++ sTestDocs)
+
+    println(dictionary.toSeq.sortWith(_._2 > _._2).take(10))
     println(nsTrainDictionary.toSeq.sortWith(_._2 > _._2).take(10))
   }
 }
