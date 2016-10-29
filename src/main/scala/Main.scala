@@ -89,6 +89,7 @@ object Main {
           scoreS += freq * Math.log(condPtermIns(term))
         }
       }
+      // println(s"${doc.id} - spam (${scoreS}) / non-spam (${scoreNs})")
       count += (if (scoreNs > scoreS) 0 else 1)
       if (scoreNs < scoreS) println(s"${doc.id} - false detected as spam")
     }
