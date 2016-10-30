@@ -25,22 +25,76 @@
 \begin{document}
 
 \maketitle
+\begin{multicols}{2}
 
-\href{https://github.com/kriku/ir-nb}{Repository}
+  \paragraph*{Exercise Repository}
 
-\begin{verbatim}
-6-380msg1.txt - wrongly classified as spam
-6-453msg1.txt - wrongly classified as spam
-6-437msg3.txt - wrongly classified as spam
-6-890msg3.txt - wrongly classified as spam
-6-790msg1.txt - wrongly classified as spam
-6-809msg3.txt - wrongly classified as spam
-6-781msg5.txt - wrongly classified as spam
+\href{https://github.com/kriku/ir-nb}{the ugliest implementation (github)}
+- contains source code, data sets in recourse directory, sbt configuration, and
+about everything in \texttt{Main} class.\\
+
+Based on Naive Bayes algorithm (multinomial model)
+\cite[Chapter 13, figure 13.2]{irbook}
+
+Conditional probabilities are computed based on train set (350 nonspam messages
+and 350 spam messages), which give as prior probabilies:\\
+
+$ P(\texttt{ns}) = \frac{350}{700} = 0.5 $
+and 
+$ P(\texttt{s}) = \frac{350}{700} = 0.5 $.\\
+
+Conditional probabilities for every token computes by dictionaries of doc, with
+multiplication on token frequency (actually it's equals computations by tokens,
+\textit{but I already conduct dictionaries for each doc}).
+
+After that evaluates on test sets with 130 nonspam messages and 130 spam
+messages. As soon as we use logarithm normalization on probability values $\in (0..1)$,
+thus all scores are negative.
+
+
+
+
+\paragraph*{Applying on \texttt{ns} test set}
+
+Within 130 nonspam messages 7 was wrongly classified as spam:\\
+
+\begin{center}
+\begin{tabular}{lrr}
+  docID & spam & nonspam \\
+  \hline
+  6-380msg1.txt & -1204.08 & -1241.75 \\
+  6-453msg1.txt & -108.18 & -109.31 \\
+  6-437msg3.txt & -1486.73 & -1546.93 \\
+  6-890msg3.txt & -1745.23 & -1753.74 \\
+  6-790msg1.txt & -2711.84 & -2797.29 \\
+  6-809msg3.txt & -2226.56 & -2365.50 \\
+  6-781msg5.txt & -455.77 & -457.09 \\
+  \hline
+\end{tabular}
+
 ACCURACY - 0.9461538
+\end{center}
 
-spmsga125.txt - wrongly classified as non-spam
+\paragraph*{Applying on \texttt{s} test set}
+And almost all spam messages was properly classified.
+Except one:\\
+
+\begin{center}
+\begin{tabular}{lrr}
+  docID & spam & nonspam \\
+  \hline
+  spmsga125.txt & -1268.22 & -1258.18 \\
+  \hline
+\end{tabular}
+
 ACCURACY - 0.99230766
-\end{verbatim}
+\end{center}
+
+\end{multicols}
+
+\vfill
+\bibliographystyle{unsrt}
+\bibliography{report}
 
 
 \end{document}

@@ -89,9 +89,11 @@ object Main {
           scoreS += freq * Math.log(condPtermIns(term))
         }
       }
-      // println(s"${doc.id} - spam (${scoreS}) / non-spam (${scoreNs})")
       count += (if (scoreNs > scoreS) 0 else 1)
-      if (scoreNs < scoreS) println(s"${doc.id} - false detected as spam")
+      if (scoreNs < scoreS) {
+        println(s"${doc.id} & ${scoreS} & ${scoreNs} \\\\")
+        // println(s"${doc.id} - false detected as spam")
+      }
     }
 
     println(s"ACCURACY - ${1 - count.toFloat/nsTestDocs.length}")
@@ -111,7 +113,10 @@ object Main {
         }
       }
       count += (if (scoreNs > scoreS) 0 else 1)
-      if (scoreNs > scoreS) println(s"${doc.id} - false detected as non-spam")
+      if (scoreNs > scoreS) {
+        println(s"${doc.id} & ${scoreS} & ${scoreNs} \\\\")
+        // println(s"${doc.id} - false detected as non-spam")
+      }
     }
 
     println(s"ACCURACY - ${count.toFloat/nsTestDocs.length}")
